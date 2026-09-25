@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Todo App</title>
+
+    <link rel="stylesheet" href="https://bootswatch.com/5/solar/bootstrap.min.css">
+
+    <style>
+        li {
+            cursor: pointer;
+            color: blue;
+        }
+
+        li:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Todo App!</h1>
+
+        <div class="input-group mb-3">
+            <input id="new-todo-title" type="text" class="form-control" placeholder="Recipient’s username" aria-label="Recipient’s username"
+                aria-describedby="basic-addon2">
+            <button type="button" class="btn btn-outline-success" id="add-todo-button">Todo
+            hinzufügen</button>
+        </div>
+
+        <ul id="todo-list" class="list-group">
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", init);
+
+        async function init() {
+            const addButton = document.querySelector("#add-todo-button");
+            addButton.addEventListener("click", async () => await addTodoButtonClicked);
+
+            const inputTitle = document.querySelector("#new-todo-title");
+            inputTitle.addEventListener("keydown", async (e) => {
+                if (e.key === 'Enter') {
+                    await addTodoButtonClicked();
+                }
+            });
+
+            const todoItemsResponse = await fetch("/v1/todo-items");
+            const todoItems = await todoItemsResponse.json();
+            renderTodoItems(todoItems);
+        }
+
+        function renderTodoItems(todoItems) {
+            todoItems.forEach((todoItem) => renderTodoItem(todoItem));
+        }
+
+        function renderTodoItem(todoItem) {
+            const newTodoItem = document.createElement("li");
+            newTodoItem.innerText = todoItem.title;
+            newTodoItem.addEventListener("click", async () => removeTodoItem(todoItem.id));
+            newTodoItem.classList.add("list-group-item");
+
+            newTodoItem.setAttribute("data-created", todoItem.created);
+            newTodoItem.setAttribute("data-id", todoItem.id);
+
+            const todoList = document.querySelector("#todo-list");
+            todoList.appendChild(newTodoItem);
+        }
+
+        async function removeTodoItem(itemToDeleteId) {
+            const response = await fetch("/v1/todo-items/" + itemToDeleteId, {
+                method: "DELETE",
+            });
+
+            if(response.status !== 200) {
+                return alert("Failed to delete item!")
+            }
+
+            const selector = `li[data-id="${itemToDeleteId}"]`;
+            const todoListItem = document.querySelector(selector);
+            if(todoListItem === undefined) {
+                return;
+            }
+
+            todoListItem.remove();
+        }
+
+        async function addTodoButtonClicked() {
+            const titleInput = document.querySelector("#new-todo-title");
+            const title = titleInput.value;
+
+            if (title === "") {
+                return;
+            }
+
+            const newTodoItem = {
+                title: title,
+                id: nanoid(),
+                created: new Date().toUTCString(),
+            };
+
+            renderTodoItem(newTodoItem);
+
+            titleInput.value = "";
+
+            // Jezt bitte Daten zum Server schicken!
+            await storeTodoItemInBackend(newTodoItem);
+        }
+
+        async function storeTodoItemInBackend(newTodoitem) {
+            const body = JSON.stringify(newTodoitem);
+
+            const response = await fetch("/v1/todo-items", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: body,
+            });
+
+            if(response.status !== 200) {
+                alert("Backend failed to store todo item!");
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js';
+        // make nanoid globally available
+        window.nanoid = nanoid;
+    </script>
+</body>
+
+</html>
