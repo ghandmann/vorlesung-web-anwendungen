@@ -78,3 +78,46 @@ paginate: true
   - Gerne direkt in der Vorlesung.
   - Asynchron am besten via MS Teams
   - Wenns gar nicht anders geht: epplers@hs-albsig.de
+
+---
+
+<!-- _class: lead -->
+
+# Organisatorisches
+## Was? Wieso? Warum?
+
+---
+# "Neue" Vorlesung
+
+- Bisher war Web Anwendungen 1 + 2 getrennt
+    - Web 1: HTML, CSS, JavaScript Grundlagen: Entfällt, wird jetzt vorrausgesetzt
+    - Web 2: Web-Backend mit JavaScript und Express, Server- und Clientseitig, Datenbank, heißt jetzt "Web Anwendungen"
+- Hier und da steht könnte immer noch ein "Web Anwendungen 2" auftauchen, nicht wundern. :wink:
+- Es gibt bei GitHub ein altes Repository zu Web Anwendungen 2
+    - https://github.com/ghandmann/HS-AlbSig-WebAnwendungen2
+    - Das ist archiviert und ReadOnly! Nicht verwechseln.
+
+---
+
+# Praktikum
+
+- Vorlesung wird von einem Praktikum begleitet
+- Termine stehen im eLearning Portal (elearning.hs-albsig.de)
+- Teamarbeit in 3er/4er Teams
+- Vorgabe: Bestehende API mit Datenmodell
+- Reine Praktikumszeit seitens Hochschule knapp kalkuliert
+- Bestehen des Praktikums ist Teilnahmevorraussetzung zur Klausur!
+
+---
+# Technologie
+
+- Backend:
+    - Sprache: JavaScript (Node.js)
+    - Framework: Express
+- Frontend: 
+    - Sprache: HTML5, CSS, JS, AJAX, JSON, jQuery, Bootstrap
+    - Kein Angular/React → KISS
+- Datenbank: SQLite
+- Deployment: Express Development Server
+- IDE-Vorschlag: VSCode 
+- Versionskontrolle: Git, GitHub.com
