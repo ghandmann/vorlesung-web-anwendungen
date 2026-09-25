@@ -54,13 +54,15 @@ paginate: true
 - Immer hybrid
 - Immer mit Aufzeichnung
     - Vergesse ich gerne mal zu starten...einfach erinnern :wink:
+- Folien sind work in progress
+    - Der "alte" Foliensatz auf Basis von OpenDocument Präsentationen wird nach Markdown und MARP migriert
 
 ---
 
 # Vorlesung ist Open-Source!
 
 - GitHub Repository:
-  https://github.com/ghandmann/vorlesung-software-engineering
+  https://github.com/ghandmann/vorlesung-web-anwendungen
 - Pull-Requests Wilkommen!
 - Ideen? Verbesserungen? Kritik?
   Immer her damit!
