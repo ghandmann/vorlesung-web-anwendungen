@@ -8,7 +8,7 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 <!-- _class: lead -->
 
 # Node.js Crashcourse
-## Web Anwendungen 2
+## Web Anwendungen
 ## Sven Eppler
 
 ![width:1100px center](./images/sodge-hochschule.png)
