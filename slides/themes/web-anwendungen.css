@@ -59,6 +59,13 @@ img[alt~="right"] {
     float: right;
 }
 
+div.col-2 {
+    margin-top: 30px;
+    columns: 2;
+
+    ul { margin-top: 0; margin-bottom: 20px; }
+}
+
 footer,
 section::after {
     font-size: 0.6em;
