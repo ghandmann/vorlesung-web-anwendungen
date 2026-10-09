@@ -55,6 +55,10 @@ img[alt~="center"] {
     display: block;
 }
 
+img[alt~="right"] {
+    float: right;
+}
+
 footer,
 section::after {
     font-size: 0.6em;
