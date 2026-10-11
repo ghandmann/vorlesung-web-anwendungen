@@ -22,7 +22,7 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 
 ---
 
-# Client-Server Architektur
+# Client-Server-Architektur
 
 ![right](images/client-server-architektur.png)
 
@@ -36,12 +36,12 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 
 ---
 
-# Request-Response Prinzip
+# Request-Response-Prinzip
 
 ![width:800px right](images/request-response-prinzip.png)
 
-- Ein Client stellt eine Anfrage (Request)
-- Der Server antwortet auf diese Anfrage (Response)
+- Ein Client stellt einen Request.
+- Der Server antwortet mit einer Response.
 
 ---
 <!-- _class: lead -->
@@ -52,7 +52,7 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 
 # HTTP Basics
 
-- HyperText Transport Protocol
+- Hypertext Transfer Protocol
 - 1989, Tim Berners-Lee am CERN
 - Basiert auf TCP/IP
 - OSI-Schichtenmodell Schicht 7
@@ -64,25 +64,25 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 ---
 
 # HTTP Basics
-- HTTP ist Zeilenbasiert
+- HTTP/1.x ist zeilenbasiert
   Zeilenendezeichen: `CRLF`, `0x0D 0x0A`, `\r\n`
-- HTTP Message besteht aus:
+- Eine HTTP-Nachricht besteht aus:
     - `Request-Line | Status-Line`
-      Unterscheided zwischen Request/Response
-    - HTTP Headers (Kopfzeilen, MetaDaten)
-    - HTTP Body (Körper, Inhale)
+      Unterscheidet zwischen Request und Response
+    - HTTP-Header (Kopfzeilen, Metadaten)
+    - HTTP-Body (Körper, Inhalt)
 - [RFC2616: Message Format](https://www.rfc-editor.org/info/rfc2616/#section-4)
 
 ---
 
 # Request-Line & Status-Line
 
-- Request Line BNF Gramatik:
+- Request-Line-BNF-Grammatik:
     - Request-Line = <span style="color: red;">Method</span> SP <span style="color: blue">RequestURI</span> SP <span style="color: green">HTTPVersion</span> CRLF
 
     Beispiel:
     <span style="color: red;">GET</span> <span style="color: blue">/</span> <span style="color: green">HTTP/1.1</span>&lt;CRLF&gt;
-- Status Line BNF Gramatik:
+- Status-Line-BNF-Grammatik:
     - Status-Line = <span style="color: green;">HTTPVersion</span> SP <span style="color: red">StatusCode</span> SP <span style="color: blue">ReasonPhrase</span> CRLF
 
     Beispiel:
@@ -93,26 +93,26 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 # HTTP Request Methods
 
 - GET
-    - Abrufen einer Resource
+    - Abrufen einer Ressource
 - POST
-    - Erzeugt eine Resource auf dem Server
+    - Erzeugt eine Ressource auf dem Server
 - PUT
-    - Erzeugt oder ersetzt eine Resource auf dem Server
+    - Erzeugt oder ersetzt eine Ressource auf dem Server
 - DELETE
     - Löscht eine Resource
 - PATCH
-    - Ändert eine Resource
+    - Ändert eine Ressource
 
 ---
 
 # HTTP Request Methods
 
 - HEAD
-    - Ruft Metadaten für eine Resource ab
+    - Ruft Metadaten für eine Ressource ab
 - TRACE
-    - Spiegelt die Anfrage an den Client
+    - Spiegelt den Request an den Client
 - OPTIONS
-    - Welche Methoden sind für die Resource erlaubt
+    - Welche Methoden sind für die Ressource erlaubt
 - CONNECT
     - Der Proxy-Server soll zum Ziel durchstellen
 
@@ -123,10 +123,10 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 
 - 1XX - Informationen
     - 100 Continue
-    - 101 Switching Procotols
+    - 101 Switching Protocols
 - 2XX - Erfolg
     - 200 OK
-    - 201 No Content
+    - 201 Created
 - 3XX - Umleitung
     - 301 Moved Permanently
     - 307 Temporary Redirect
@@ -135,9 +135,9 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
     - 404 Not Found
 - 5XX - Server Fehler
     - 500 Internal Server Error
-    - 503 Bad Gatway
-- 9XX - Proprietäre Fehler
-    - 902 Selbst ausgedacht :smile:
+    - 503 Service Unavailable
+- 9XX - Keine standardisierten HTTP-Statuscodes
+    - 902 wäre ein nicht standardisierter, proprietärer Code
 
 </div>
 
@@ -146,12 +146,12 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 # HTTP Header
 
 - Der Header folgt auf die `Request-Line | Status-Line`
-- Er besteht aus Schlüssel-Wert Paaren, die Zeilenweise getrennt werden:
+- Er besteht aus Schlüssel-Wert-Paaren, die zeilenweise getrennt werden:
     `Header-Name: Header-Value<CRLF>`
 - Header dürfen mehrfach vorkommen
 - Reihenfolge nicht vorgegeben
-- Es gibt spezille Request- und Response-Header aber auch Header die in beiden Fällen verwendet werden
-- Das Ende der Header wird durch einen abschließende Zeilenumbruch markiert (`CRLF`)
+- Es gibt spezielle Request- und Response-Header, aber auch Header, die in beiden Fällen verwendet werden.
+- Das Ende der Header wird durch eine Leerzeile markiert (`CRLF CRLF`).
 
 ---
 
@@ -176,7 +176,7 @@ Expires: Thu, 08 Oct 2026 13:59:42 GMT
 Wichtige Header:
     - `Content-Type`: Was ist der Body? (text/plain, text/html, video/mp4, etc.)
     - `Content-Length`: Wie lang ist der Body?
-    - `Host`: Für welche Domain wurde die Anfrage gestellt?
+    - `Host`: Für welche Domain wurde der Request gestellt?
     - `Last-Modified`: Wann wurden die Daten zuletzt geändert?
     - `Set-Cookie`: Setzt ein Cookie auf dem Client
     - `Cookie`: Schickt ein Cookie vom Client zum Server
@@ -187,12 +187,12 @@ Wichtige Header:
 
 - Der Body folgt auf den Header
 - Nicht jeder Request/jede Response hat einen Body:
-    - GET Request (Fragt Daten an)
-    - 404 Not Found Response (Angefragte Daten wurden nicht gefunden)
+    - GET-Requests haben üblicherweise keinen Body.
+    - Auch Fehler-Responses, etwa `404 Not Found`, können einen Body enthalten.
 - Transportiert die Nutzdaten (Payload)
-    - Request: Formulardaten, Uploads (z.B.Bilder), JSON-Daten, etc.
-    - Response: Html-Seiten, JPEG-Bild, JSON-Daten, etc.
-- Wichtig: `Content-Length` Header und tatsächlieh lännge des Bodies _sollten_ übereinstimmen.
+    - Request: Formulardaten, Uploads (z. B. Bilder), JSON-Daten usw.
+    - Response: HTML-Seiten, JPEG-Bilder, JSON-Daten usw.
+- Wichtig: Der `Content-Length`-Header und die tatsächliche Länge des Bodys sollten übereinstimmen.
 
 ---
 
@@ -256,14 +256,14 @@ Expires: Sat, 07 Nov 2026 14:28:50 GMT <CRLF>
 - HTTP 1.0: Jeder HTTP-Request wird als TCP/IP-Verbindung abgebildet
     - Hoher TCP/IP Overhead wg. Slow-Start-Algorithmus
     - Server schließt die Verbindung nach jeder Response
-        - Daher ist `Content-Length` historisch so "unwichtig"
+        - Daher war `Content-Length` historisch weniger wichtig.
 
 - HTTP 1.1
-    - Connection-Keep-Alive wird eingeführt
-        - Eine TCP/IP Connection kann viele Request-Response-Zyklen abbilden
+    - Persistente Verbindungen (Keep-Alive) werden eingeführt.
+        - Eine TCP/IP-Verbindung kann viele Request-Response-Zyklen abbilden.
         - `Content-Length` wird plötzlich wichtig
-    - Piplining wird eingeführt
-        - Verbessert Request-Performance
+    - Pipelining wird eingeführt.
+        - Es verbessert die Performance von Requests.
 
 ---
 
@@ -278,26 +278,26 @@ Expires: Sat, 07 Nov 2026 14:28:50 GMT <CRLF>
 
 - Connection-Multiplexing (Streams)
     - Eine TCP/IP-Connection kann parallel für mehrere Request-Response-Zyklen genutzt werden
-- Bessere Komprimierbarket (insbesondere Header dank HPACK)
+- Bessere Komprimierbarkeit (insbesondere der Header dank HPACK)
 - Binärprotokoll
-- Server-Push (sowieso benötigte Resourcen können gleich mitgeschickt werden)
-- TLS-Only (laut Standard optional, durch Google und Mozilla aber quasi erzwungen)
+- Server Push (benötigte Ressourcen können direkt mitgeschickt werden)
+- TLS ist laut Standard optional; Browser unterstützen HTTP/2 praktisch nur über TLS.
 
 ---
 
 # HTTP 3
 
-- Wechsel von TCP/IP auf UDP
-    - Paketververlust blockiert nicht mehr gesamte Connection
-- Wechsel von TLS zu Datagram TLS (dTLS)
+- HTTP/3 nutzt QUIC über UDP statt TCP.
+    - Paketverlust auf einem Stream blockiert nicht die gesamte Verbindung.
+- QUIC integriert TLS 1.3
 - Verbindungskontinuität
     - Netzwerkwechsel zerstören bestehende Verbindungen nicht mehr (vgl. Smartphone und Funkturm)
-- Schnellerer dTLS Handshake
+- Schnellerer Verbindungsaufbau
     - Wiederaufnahme der verschlüsselten Verbindung ohne neuen Handshake
 - Verbesserte Header-Komprimierung (QPACK)
 
 ---
-# HTTP Versions Verteilung
+# Verteilung der HTTP-Versionen
 
 
 ![center width:1100px](images/http-versions-verteilung.webp)
@@ -306,27 +306,27 @@ Expires: Sat, 07 Nov 2026 14:28:50 GMT <CRLF>
 
 ---
 
-# Stateless vs. Statefull
+# Stateless vs. Stateful
 
 - Für Menschen ist so gut wie alles "zustandsbehaftet"
-    - Fragt man eine Person zweimal hintereinander nach ihrem Namen, ist diese Person irritiert
-    - Menschen merken sich den Zustand "Der weiß doch, wie ich heiße" und reagieren entsprechend bei der 2. Frage anders
+    - Fragt man eine Person zweimal hintereinander nach ihrem Namen, ist diese Person irritiert.
+    - Menschen merken sich den Zustand "Der weiß doch, wie ich heiße" und reagieren bei der zweiten Frage entsprechend anders.
 
 - HTTP dagegen ist "zustandslos"
-    - Fragt man einen WebServer mehrfach das gleiche, Antwortet er jedes mal so, als wäre es das erste und einzige mal
-    - HTTP (und damit auch WebServer) merken sich keinen Zustand!
+    - Fragt man einen Webserver mehrfach dasselbe, antwortet er jedes Mal so, als wäre es das erste und einzige Mal.
+    - HTTP und damit auch Webserver merken sich keinen Zustand.
 
 ---
 
 # HTTP is stateless
-- Da HTTP inhärent zustandslos ist stellt sich aber eine Frage:
-    - Wie "merkt" sich eine WebSite etwas? 
+- Da HTTP inhärent zustandslos ist, stellt sich die Frage:
+    - Wie "merkt" sich eine Website etwas?
         - Eingeloggt bleiben?
         - Alle Bilder eines Users anzeigen?
         - Benutzer-Tracking zu Werbezwecken?
 
-    - D.H. für jeden Request müssen alle Informationen an den Server transportiert werden
-        - Wer ist dieser User?
+    - Das heißt: Für jeden Request müssen alle nötigen Informationen an den Server übertragen werden.
+        - Wer ist dieser Benutzer?
         - Welches Produkt soll in den Warenkorb?
 
 ---
@@ -334,24 +334,20 @@ Expires: Sat, 07 Nov 2026 14:28:50 GMT <CRLF>
 # HTTP Cookies
 
 - Um die immer gleiche Information immer wieder zum Server zu schicken, nutzt HTTP sog. Cookies
-    - Das sind Daten die der Server an den Client übergibt (`Set-Cookie`-Header)
+    - Das sind Daten, die der Server an den Client übergibt (`Set-Cookie`-Header).
     - Der Client speichert diese Daten lokal
-    - Bei jedem Request zum selben Server schickt der Browser automatisch die Cookies mit (`Cookie`-Header)
+    - Bei passenden Requests schickt der Browser die Cookies automatisch mit (`Cookie`-Header).
 
-- So kann clientseitig z.B. eine UserId, SessionId, TrackingId, etc. abgelegt werden
-- Und serverseitig können die eigentlich "zustandslosen" HTTP-Requests mithilfe dieser Information dann zu einem Zustand zusammengefasst werden.
+- So können clientseitig z. B. eine Benutzer-ID, eine Sitzungs-ID oder eine Tracking-ID abgelegt werden.
+- Serverseitig lassen sich die eigentlich "zustandslosen" HTTP-Requests mithilfe dieser Informationen einem Zustand zuordnen.
 
 ---
 # HTTP Cookies
 
-- Cookies dürfen max. 4kb groß sein
-- Cookies sind an die `Host:Port`-Kombination gebunden
-    - Cookie von `google.com:80` wird nur an `google.com:80` geschickt
-    - Cookie von `google.com:80` wird **nicht** an `amazon.com:80` geschickt
-    - Cookie von `google.com:1234` wird **nicht** an `google.com:80` geschickt
-- Cookies können sich zusätzlich auf einen Pfad (Path based cookies) beziehen
-    - Cookie von `google.com:80/path`wird nur an `google.com:80/path` geschickt
-    - Cookie von `google.com:80/path` wird **nicht** an `google.com:80/other` geschickt
+- Cookies sind üblicherweise auf etwa 4 KB begrenzt.
+- Cookies sind an eine Domain und optional an einen Pfad gebunden
+    - Ein Cookie für `google.com` wird nicht an `amazon.com` geschickt.
+    - Ein Cookie für `google.com/path` wird an passende Pfade unter `/path` geschickt, aber nicht an `/other`.
 
 ---
 
@@ -362,20 +358,20 @@ Expires: Sat, 07 Nov 2026 14:28:50 GMT <CRLF>
 - Cookies liegen "ungeschützt" beim Client!
     - Können beliebig beim Client verändert werden
     - Können bequem über die Developer-Console eingesehen/verändert werden
-    - Können potentiell auch über JavaScript ausgelesen/verändert/gestohlen werden
+    - Können potenziell über JavaScript ausgelesen, verändert oder gestohlen werden
     - Für "sichere" Cookies siehe Vorlesung "Authentication"
 
 ---
 
 # HTTP Debugging
 
-Web Anwendungen sind **verteilte Anwendungen**, Fehler können im Client, im Server und auf Transportebene passieren.
+Webanwendungen sind **verteilte Anwendungen**. Fehler können im Client, im Server und auf der Transportebene auftreten.
 
 - Browser Cache abschalten!
 - Developer Console nutzen (Network-Tab, JavaScript-Console)
 - Server Logs prüfen
-- `curl` (kein caching, debug ausgaben, schnell wiederholbar, etc.)
+- `curl` (kein Caching, Debug-Ausgaben, schnell wiederholbar usw.)
 - Postman (kostenpflichtig, Educational Plan)
-- Insomia
+- Insomnia
 - hopscotch.io
 - Telnet / Wireshark
