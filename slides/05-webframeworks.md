@@ -24,11 +24,11 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 
 - Conventions-over-Configuration
     - Code First, think later
-    - Die Konvention definiert die Projektstruktur/Methodik
+    - Die Konvention definiert die Projektstruktur und Methodik
     - Defaults nehmen einem Entscheidungen ab
-    - "Man kommt schnell vom Boden weg"
+    - "Man kommt schnell in Gang"
     - Kennt man die Konvention nicht, ist man "verloren"
-    - Weicht man vom HappyPath ab, ist die Konvention oft im Weg
+    - Weicht man vom Happy Path ab, ist die Konvention oft im Weg
 
 ---
 
@@ -37,35 +37,35 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 - Configuration-over-Convention
     - Think first, code later
     - Funktionalität ist erst nach der Konfiguration verfügbar
-    - Deutlich längere "Bootup"-Phase
+    - Deutlich längere Boot-up-Phase
     - Passt sich besser dem Problem an
-    - Erfordert mehr Erfahrung/vorausschauende Entscheidungen
-    - In-Depth-Verständnis des Gesamtsystems
+    - Erfordert mehr Erfahrung und vorausschauende Entscheidungen
+    - Erfordert ein tiefes Verständnis des Gesamtsystems
 
 ---
 
 # HTTP Request Parsing
 
-- Der HTTP-Request schlägt als erstes am Framework auf
-    - Unterstützung von HTTP 1.1 / 2 / 3
+- Der HTTP-Request wird vom HTTP-Server entgegengenommen und an das Framework übergeben
+    - Unterstützung von HTTP/1.1, HTTP/2 und HTTP/3
 - Zerlegen des Requests
-    - Requst-Line
+    - Request Line (bei HTTP/1.1)
     - Header
     - Body
-- Bereitstellen eines "Requests"-Objektes für später
+- Bereitstellen eines Request-Objekts für die weitere Verarbeitung
 - Weitergabe des Requests an einen Dispatcher/Router
 
 ---
 
 # Dispatcher // Router
 
-- Match den HTTP-Request auf eine Action
-    - Action = Der Quellcode
+- Ordnet den HTTP-Request einer Action zu
+    - Eine Action ist der auszuführende Anwendungscode
 - Mögliche Regeln:
     - HTTP-Verb
     - Request-Header
     - Request-URL
-    - Authentifizierter-Benutzer
+    - authentifizierter Benutzer
 - Mögliche Ziele:
     - Actions in Controllern
     - Lambdas (In-Line-Actions)
@@ -75,10 +75,10 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 # Controller
 
 - Stammt aus dem Model-View-Controller-Pattern
-    - Der Controller ist bindeglied zwischen WebFramework und Business Logic
-    - Enthält den Code der die Anwendung "aus macht"
-    - Funktionen/Methoden in einem Controller sind "Actions"
-    - Diese Actions sind das Ziel vom Router/Dispatcher
+    - Der Controller ist das Bindeglied zwischen Webframework und Business Logic
+    - Er enthält den Code, der die Anwendungslogik implementiert
+    - Funktionen und Methoden in einem Controller sind Actions
+    - Diese Actions sind das Ziel des Routers/Dispatchers
 
 ---
 
@@ -89,23 +89,23 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 
 - Middlewares sind Schichten zwischen HTTP-Parsing und Controllern / Actions
 - Können den Request vorzeitig beenden
-  (z.B. Authentication Required)
+    (z. B. bei Authentication Required)
 - Können die Response modifizieren
-  (z.B. JSON Serialisierung)
+    (z. B. durch JSON-Serialisierung)
 - Gemeinsame Funktionalität kann so generalisiert werden
-  (z.B. Logging, User aus DB Laden)
+    (z. B. Logging oder das Laden des Users aus der Datenbank)
 
 ---
 
 # Response generieren
 - Das Framework erzeugt ein Response-Objekt
-    - Setzen des HTTP-Status Code
-    - Setzen des HTTP-Headern
+    - Setzen des HTTP-Statuscodes
+    - Setzen der HTTP-Header
     - Setzen des HTTP-Body
-- Middlewares übernehmen die Konvertierung von "High Level Objects"
-    - JSON Formatierung, Bilder ausgeben, Template-Engine, etc.
+- Middlewares übernehmen die Konvertierung von High-Level-Objekten
+  (z. B. JSON-Formatierung, Bildausgabe oder Template-Engine)
 - Low-Level-Response-Manipulation selten notwendig
-  (z.B. Header setzen, Body selber schreiben)
+    (z. B. Header setzen oder den Body selbst schreiben)
 - Das Response-Objekt wandert wieder durch die Middleware zurück und kann hier modifiziert werden
 
 ---
@@ -113,15 +113,15 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 # Request-Lifetime
 
 - Request-Lifetime meint:
-    - Wie lange "leben" Request/Response spezifische Objekte innerhalb des Frameworks
-- Jeder Request ist isoliert, hat also seinen eigenen Context (z.B. eigene Request/Response Objekte)
-- Sobald die Response auf die Leitung geschrieben wurde, wird der Context zerstört und die Request-Lifetime endet
-- Im Request/Response Objekt können **keine** Daten persistiert werden!
-- Daraus ergibt sich: Ein Request ist stateless!
+    - Wie lange Request- und Response-spezifische Objekte innerhalb des Frameworks existieren
+- Jeder Request hat seinen eigenen Context (z. B. eigene Request- und Response-Objekte)
+- Sobald die Response übertragen wurde, wird der Context freigegeben und die Request-Lifetime endet
+- Request- und Response-Objekte sind nicht für die dauerhafte Speicherung von Daten gedacht
+- HTTP ist stateless: Zustandsdaten müssen bei Bedarf separat gespeichert und dem Request zugeordnet werden
 
 ---
 
-# Request-Lieftime
+# Request-Lifetime
 
 ![center width:1200px](images/RequestLifetime.png)
 
@@ -129,14 +129,14 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 
 # Model-View-Controller
 
-- Pattern für Software-Design
+- Pattern für Softwaredesign
 - Trennung von:
     - Datenhaltung (Model)
     - Anzeige (View)
     - Geschäftslogik (Controller)
 - Auch nicht-MVC-Frameworks implementieren Teile davon (z.B. Controller)
 - Frameworks:
-    - Ruby on Rails, Mojolicous, Spring MVC, Django, ZendFramework
+    - Ruby on Rails, Mojolicious, Spring MVC, Django, Zend Framework
 - Im Backend nach wie vor ein relevantes Pattern
 
 ---
@@ -152,12 +152,12 @@ footer: "Vorlesung Web Anwendungen, Wintersemester 2026/2027"
 - Die „App“-Instanz von Express liefert Basis-Routing:
     - `app.get("/", (req, res) => { … });`
     - `app.post("/avatar/upload", (req, res) => { … });`
-- Das „Router“-Objekt abstrahiert das Routing von der App, dadurch ist es austauschbar/übertragbar
+- Das „Router“-Objekt abstrahiert das Routing von der App und lässt sich dadurch in anderen Apps wiederverwenden
 ```javascript
 var router = express.Router();
 router.get("/", (req, res) => { … });
 router.post("/avatar/upload", (req, res) => { … });
-app.use("/“, router);
+app.use("/", router);
 ```
 
 - Details: https://expressjs.com/en/guide/routing.html
@@ -192,7 +192,7 @@ router.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-router.post("/path/to", (req, res) => { … }
+router.post("/path/to", (req, res) => { … });
 
 app.use('/', router);
 
@@ -201,33 +201,33 @@ module.exports = app;
 
 ---
 
-# Basis Routing vs. Routing Instanz
+# Basis-Routing vs. Router-Instanz
 
 - Basis Routing
     - Sofort vorhanden
-    - Routing sind fest mit der App verdrahtet
+    - Routen sind fest mit der App verdrahtet
     - Für kleine Anwendungen übersichtlich
     - Komplexe Routing-Strukturen machen die App unübersichtlich und schlecht wartbar
 - Router Instanz
     - Muss zunächst erzeugt werden
     - Kann in jeder Express-App eingehängt werden
-    - Bei komplexem Routing können Unter-Router erzeugt werden
+    - Bei komplexem Routing können Sub-Router erzeugt werden
     - Erlaubt das Strukturieren von Routen in Ordnern/Dateien
 
 ---
 
-# Router Instanz: Vorteil komplexe URL Strukturen
+# Router-Instanz: Vorteil URL-Strukturen
 
-- Getrennte JavaScript Datei pro Kategorie
-    - z.B. Users.js, Uploads.js, Posts.js
-    - Jede Kategorie definiert ihr eigenes URL-Routing
+- Getrennte JavaScript-Datei pro Kategorie
+    - z. B. `users.js`, `uploads.js`, `posts.js`
+    - Jede Datei definiert das URL-Routing für ihre Kategorie
     - Typischerweise im Unterordner „routes“
-- Eine Änderung in „Users.js“ führt nicht zu einer Änderungen in den anderen JavaScript files
+- Eine Änderung in `users.js` erfordert keine Änderungen an den anderen JavaScript-Dateien
 - Getrennte Verantwortlichkeiten
-    - Weniger Merge-Conflicts in git!
+    - Weniger Merge-Conflicts in Git
 
 ---
 
 # Express Beispiel: Todo API
 
-- Im Git Repository: $repo/Beispiele/Node.js/Todo-Backend/
+- Im Git-Repository: `$repo/beispiele/Node.js/Todo-Backend/`
