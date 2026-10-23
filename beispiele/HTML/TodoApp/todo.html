@@ -4,47 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meine TodoApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+    <style>
+        ul#todo-list li span.badge {
+            cursor: pointer;
+
+            
+        }
+    </style>
 </head>
 <body>
-    <h1>Meine TodoApp</h1>
-    <input type="text" id="todo-title"><button id="add-todo-button">Todo merken</button>
-    <ul id="todo-list">
-    </ul>
+    <div class="container">
+        <h1>Meine TodoApp</h1>
+        <div class="input-group">
+            <input type="text" id="todo-title" class="form-control">
+            <button id="add-todo-button" class="btn-outline theme-success input-group-btn">Todo merken</button>
+        </div>
+        <ul class="list-group mt-5" id="todo-list">
+        </ul>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", init);
 
         function init() {
-            // EventListener registrieren
+            registerEventListeners();
+
+            const initialTodoItems = loadTodoItemsFromLocalStorage();
+            renderTodoList(initialTodoItems);
+        }
+
+        function registerEventListeners() {
+            // "Todo merken"-Button mit click-Handler versehen
             const addButton = document.querySelector("#add-todo-button");
             addButton.addEventListener("click", addTodoItem);
 
+            // Text-Input-Feld mit key-event versehen
             const todoInput = document.querySelector("#todo-title");
             todoInput.addEventListener("keyup", (event) => {
+                // Wenn Enter gedrückt wurde, addTodoItem aufrufen.
                 if(event.key === "Enter") {
                     addTodoItem();
                 }
             });
         }
 
+        // Rendert die komplette TodoList neu
+        function renderTodoList(todoItems) {
+            clearTodoList();
+
+            // Liste die alle "li"-Elemente puffert
+            let todoListItems = [];
+
+            todoItems.forEach((todoItemTitle) => {
+                // "li"-Element erzeugen
+                const listItem = renderTodoListItem(todoItemTitle);
+                // "li"-Element im puffer ablegen
+                todoListItems.push(listItem);
+            });
+
+            const todoList = document.querySelector("#todo-list");
+            // Alle erzeugten "li"-Elemente in einem Rutsch anhängen (besser für die Performance)
+            // '...' ist der spread-operator, der aus der Liste lauter einzelne Parameter macht
+            todoList.append(...todoListItems);
+        }
+
+        function renderTodoListItem(todoItemTitle) {
+            // Neues "li"-Element erzeugen
+            const listItem = document.createElement("li");
+            listItem.innerText = todoItemTitle;
+            listItem.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+
+            
+            const trashCan = document.createElement("span");
+            trashCan.classList.add("badge", "theme-primary");
+            trashCan.innerText = "Erledigt";
+
+            trashCan.addEventListener("click", () => {
+                listItem.remove();
+                removeTodoItemFromLocalStorage(todoItemTitle);
+            });
+
+            listItem.append(trashCan);
+
+            return listItem;
+        }
+
+        // Löscht alle Kindelemente der TodoListe aus dem DOM
+        // WICHTIG: Hat keinen Einfluss auf die gespeicherten TodoItems!
+        function clearTodoList() {
+            const todoList = document.querySelector("#todo-list");
+
+            // innerHTML auf leeren String setzen, dadurch wird die Liste "geleert".
+            todoList.innerHTML = "";
+        }
+
+        
+        // Handler der ein neues TodoItem erzeugt
         function addTodoItem() {
+            // Input-Element selektieren
             const titleInput = document.querySelector("#todo-title");
+            // Aktuellen Wert aus dem titleInput holen
             const todoTitle = titleInput.value;
 
             if(todoTitle === "") {
                 return;
             }
 
-            const todoItem = document.createElement("li");
-            todoItem.innerText = todoTitle;
-            todoItem.addEventListener("click", () => {
-                todoItem.remove();
-            });
+            // Todo persistieren
+            storeTodoItemInLocalStorage(todoTitle);
+            // HTML Representation erzeugen
+            const todoItem = renderTodoListItem(todoTitle);
 
+            // Neu erzeugtes "li"-Element ans DOM anhängen
             const todoList = document.querySelector("#todo-list");
             todoList.appendChild(todoItem);
 
+            // Text-Input resetten
             titleInput.value = "";
         }
+
+        function loadTodoItemsFromLocalStorage() {
+            let persistedTodoItemsString = window.localStorage.getItem("todo-items");
+
+            if(persistedTodoItemsString == null) {
+                // Im LocalStorage befinden sich bisher keine Einträge unter dem key "todo-items"
+                // Also wird eine leere Liste zurück gegeben.
+                return [];
+            }
+
+            // Im LocalStorage befinden sich bereits Einträge, diese sind als JSON String hinterlegt,
+            // daher muss dieser String erst geparsed werden. Danach wird die Datenstruktur zurück gegeben.
+            return JSON.parse(persistedTodoItemsString);
+        }
+
+        function removeTodoItemFromLocalStorage(todoItemTitle) {
+            let todoItems = loadTodoItemsFromLocalStorage();
+
+            // filter() ruft das Lambda einmal für jedes Element in todoItems auf
+            // Wenn der Vergleich "true" ergibt, bleibt das Element in der Liste
+            // Wenn der Vergleich "false" ergibt, wird das Element aus der Liste entfernt
+            let filteredTodoItems = todoItems.filter((candidate) => candidate !== todoItemTitle);
+
+            window.localStorage.setItem("todo-items", JSON.stringify(filteredTodoItems));
+        }
+
+        function storeTodoItemInLocalStorage(newTodoItemTitle) {
+            // Alle existierenden TodoItems aus dem LocalStorage laden
+            let todoItems = loadTodoItemsFromLocalStorage();
+
+            // Neues TodoItem an die Liste der TodoItems anhängen
+            todoItems.push(newTodoItemTitle);
+
+            // Verlängerte Liste wieder als JSON-String im LocalStorage ablegen.
+            window.localStorage.setItem("todo-items", JSON.stringify(todoItems));
+        }
+
     </script>
 </body>
 </html>
