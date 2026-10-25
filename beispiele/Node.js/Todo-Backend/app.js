@@ -11,16 +11,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Vereinfachung: Alle TodoItems werden in einer Liste im Speicher gehalten
+// Ein neustarte des Servers löscht daher auch alle Einträge.
 app.inMemoryStore = [];
 
 // Liste alle todo items
-app.get("/v1/todo-items/", (req, res) => {
+app.get("/api/v1/todo-items/", (req, res) => {
     res.send(app.inMemoryStore);
 });
 
 // Neues todo item hinzufügen
-app.post("/v1/todo-items/", (req, res) => {
+app.post("/api/v1/todo-items/", (req, res) => {
     const newTodoItem = req.body;
+
+    // Vereinfachung: Die ankommenden Daten müssten noch validiert werden.
 
     app.inMemoryStore.push(newTodoItem);
 
@@ -28,9 +32,7 @@ app.post("/v1/todo-items/", (req, res) => {
 });
 
 // Löschen eines Todo-Items
-// /v1/todo-items/apfel -> id=apfel
-// /v1/todo-items/123 -> id=123
-app.delete("/v1/todo-items/:id", (req, res) => {
+app.delete("/api/v1/todo-items/:id", (req, res) => {
     const idToDelete = req.params.id;
 
     app.inMemoryStore = app.inMemoryStore.filter(item=>item.id !== idToDelete);
