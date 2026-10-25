@@ -15,29 +15,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Ein neustarte des Servers löscht daher auch alle Einträge.
 app.inMemoryStore = [];
 
-// Liste alle todo items
-app.get("/api/v1/todo-items/", (req, res) => {
-    res.send(app.inMemoryStore);
-});
-
-// Neues todo item hinzufügen
-app.post("/api/v1/todo-items/", (req, res) => {
-    const newTodoItem = req.body;
-
-    // Vereinfachung: Die ankommenden Daten müssten noch validiert werden.
-
-    app.inMemoryStore.push(newTodoItem);
-
-    res.status(200).send();
-});
-
-// Löschen eines Todo-Items
-app.delete("/api/v1/todo-items/:id", (req, res) => {
-    const idToDelete = req.params.id;
-
-    app.inMemoryStore = app.inMemoryStore.filter(item=>item.id !== idToDelete);
-
-    res.send();
-});
+// Add some usefull endpoints...
 
 module.exports = app;
