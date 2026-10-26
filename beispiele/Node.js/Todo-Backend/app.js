@@ -15,6 +15,31 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Ein neustarte des Servers löscht daher auch alle Einträge.
 app.inMemoryStore = [];
 
-// Add some usefull endpoints...
+// Listet alle Todos auf
+app.get("/api/v1/todos", (req, res) => {
+    res.send(app.inMemoryStore);
+});
+
+// Fügt neues TodoItem hinzu
+app.post("/api/v1/todos", (req, res) => {
+    const todoItem = req.body;
+
+    // TODO: Validation...
+
+    app.inMemoryStore.push(todoItem);
+
+    res.send("OK");
+});
+
+// Löscht TodoItem aus inMemoryStore
+app.delete("/api/v1/todos/:id", (req, res) => {
+    const idToDelete = Number.parseInt(req.params.id);
+
+    app.inMemoryStore = app.inMemoryStore.filter((todoItem) => {
+        return todoItem.id !== idToDelete;
+    });
+
+    res.send("OK");
+});
 
 module.exports = app;
