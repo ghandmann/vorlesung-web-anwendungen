@@ -33,7 +33,7 @@ app.post("/api/v1/todos", (req, res) => {
 
 // Löscht TodoItem aus inMemoryStore
 app.delete("/api/v1/todos/:id", (req, res) => {
-    const idToDelete = Number.parseInt(req.params.id);
+    const idToDelete = req.params.id;
 
     app.inMemoryStore = app.inMemoryStore.filter((todoItem) => {
         return todoItem.id !== idToDelete;
